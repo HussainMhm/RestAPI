@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+    title: Kitap Yönetim Sistemi
+    description: Basit bir kitap yönetim sistemi REST API.
+    version: 1.0.0
+
+servers:
+    - url: http://localhost:5000
+
+paths:
+    /books:
+        get:
+            summary: Tüm kitapların listesini al
+            responses:
+                200:
+                    description: Başarılı işlem
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Book"
+        post:
+            summary: Yeni bir kitap ekle
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Book"
+            responses:
+                201:
+                    description: Başarılı işlem
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Book"
+    /books/{book_id}:
+        get:
+            summary: Belirtilen ID'ye sahip kitabı al
+            parameters:
+                - name: book_id
+                  in: path
+                  required: true
+                  schema:
+                      type: integer
+            responses:
+                200:
+                    description: Başarılı işlem
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Book"
+                404:
+                    description: Kitap bulunamadı
+        put:
+            summary: Belirtilen ID'ye sahip kitabı güncelle
+            parameters:
+                - name: book_id
+                  in: path
+                  required: true
+                  schema:
+                      type: integer
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Book"
+            responses:
+                200:
+                    description: Başarılı işlem
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Book"
+                404:
+                    description: Kitap bulunamadı
+        delete:
+            summary: Belirtilen ID'ye sahip kitabı sil
+            parameters:
+                - name: book_id
+                  in: path
+                  required: true
+                  schema:
+                      type: integer
+            responses:
+                200:
+                    description: Başarılı işlem
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    result:
+                                        type: string
+                404:
+                    description: Kitap bulunamadı
+
+components:
+    schemas:
+        Book:
+            type: object
+            properties:
+                id:
+                    type: integer
+                title:
+                    type: string
+                author:
+                    type: string
+                publisher:
+                    type: string
+                publication_date:
+                    type: string
+                    format: date
+            required:
+                - id
+                - title
+                - author
+                - publisher
+                - publication_date
